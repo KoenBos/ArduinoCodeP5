@@ -55,10 +55,6 @@ void loop() {
   sensors_event_t temp_event, pressure_event;
   bmp_temp->getEvent(&temp_event);
   bmp_pressure->getEvent(&pressure_event);
-  
-  Serial.print(F("Temperature = "));
-  Serial.print(temp_event.temperature);
-  Serial.println(" *C");
 
   Serial.print(F("Pressure = "));
   Serial.print(pressure_event.pressure);
