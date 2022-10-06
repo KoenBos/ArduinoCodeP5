@@ -46,6 +46,10 @@ void loop() {
   Serial.print(pressure_event.pressure);
   Serial.println();
   delay(50);
-  if (pressure_event.pressure);
-
+  if (pressure_event.pressure > 1030) {
+    Serial.println("Ballon Omghoog");
+  }
+  else if (pressure_event.pressure <= 1029) {
+    Serial.println("Ballon Omlaag");
+  }
 }
