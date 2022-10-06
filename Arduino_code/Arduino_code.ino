@@ -21,10 +21,12 @@
 Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
+int led = 13;
 
 void setup() {
   Serial.begin(9600);
   while ( !Serial ) delay(100);   // wait for native usb
+  pinMode(led, OUTPUT);
 
 
   unsigned status;
@@ -43,13 +45,19 @@ void loop() {
   sensors_event_t pressure_event;
   bmp_pressure->getEvent(&pressure_event);
 
-  Serial.print(pressure_event.pressure);
-  Serial.println();
-  delay(50);
+  //Serial.print(pressure_event.pressure);
+  //Serial.println();
+  delay(1000);
   if (pressure_event.pressure > 1030) {
     Serial.println("Ballon Omghoog");
+    Serial.write(1);
+    Serial.flush();
+    digitalWrite(led, HIGH);
   }
   else if (pressure_event.pressure <= 1029) {
     Serial.println("Ballon Omlaag");
+    Serial.write(2);
+    Serial.flush();
+    digitalWrite(led, LOW);
   }
 }
