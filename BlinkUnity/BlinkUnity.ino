@@ -22,7 +22,7 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  Serial.write(1);
+  Serial.write(bmp);
   Serial.flush();
   delay(500);               // wait for a second
   digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
