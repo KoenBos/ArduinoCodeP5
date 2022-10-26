@@ -24,7 +24,7 @@ Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 int led = 13;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while ( !Serial ) delay(100);   // wait for native usb
   pinMode(led, OUTPUT);
 
@@ -42,22 +42,12 @@ void setup() {
 }
 
 void loop() {
-  sensors_event_t pressure_event;
-  bmp_pressure->getEvent(&pressure_event);
-
-  //Serial.print(pressure_event.pressure);
-  //Serial.println();
-  delay(1000);
-  if (pressure_event.pressure > 1030) {
-    Serial.println("Ballon Omghoog");
-    Serial.write(1);
-    Serial.flush();
-    digitalWrite(led, HIGH);
-  }
-  else if (pressure_event.pressure <= 1029) {
-    Serial.println("Ballon Omlaag");
-    Serial.write(2);
-    Serial.flush();
-    digitalWrite(led, LOW);
-  }
+  if(Serial.available()){
+    String pres = "";
+    sensors_event_t pressure_event;
+    bmp_pressure->getEvent(&pressure_event);
+    int pie = pressure_event.pressure;
+    pres = pres + pie;
+    Serial.println(pres);
+    }
 }
