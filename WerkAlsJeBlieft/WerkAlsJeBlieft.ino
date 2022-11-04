@@ -21,17 +21,15 @@
 Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
-int led = 13;
+
+int oldValue = -9999;
+int newValue = -9999;
 
 void setup() {
   Serial.begin(9600);
   while ( !Serial ) delay(100);   // wait for native usb
-  pinMode(led, OUTPUT);
-
-
   unsigned status;
   status = bmp.begin(BMP280_ADDRESS_ALT, BMP280_CHIPID);
-  //status = bmp.begin();
 
   /* Default settings from datasheet. */
   bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
@@ -40,9 +38,21 @@ void setup() {
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 }
+
 void loop() {
+  if(oldValue < newValue){
+    //rising
+    Serial.print("Rising");
+  }
+  else
+  {
+    Serial.print("Faling");
+  }
+  oldValue = newValue;
+  
   sensors_event_t pressure_event;
   bmp_pressure->getEvent(&pressure_event);
-  Serial.println(pressure_event.pressure);
+  newValue = pressure_event.pressure;
+  Serial.println("");
   delay(100);
 }
