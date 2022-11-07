@@ -52,7 +52,7 @@ void loop() {
   int oldValue = calcValue / 3;
   if(oldValue < TheValue){
     //rising
-    Keyboard.write(KEY_LEFT_ALT);
+    Keyboard.press('f');
     Serial.print("Rising");
     Serial.print("--");
     Serial.print(oldValue);
@@ -62,6 +62,7 @@ void loop() {
   }
   else
   {
+    Keyboard.releaseAll();
     Serial.print("Faling");
     Serial.print("--");
     Serial.print(oldValue);
