@@ -17,19 +17,27 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
+#include <Keyboard.h>
+#include "Keyboard.h"
 
 Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 
-int oldValue = -9999;
-int newValue = -9999;
+int TheValue = 1000;
+int Value1 = 2000;
+int Value2 = 2000;
+int Value3 = 2000;
+int oldValue = 2000;
+int calcValue = 3000;
 
 void setup() {
   Serial.begin(9600);
   while ( !Serial ) delay(100);   // wait for native usb
   unsigned status;
   status = bmp.begin(BMP280_ADDRESS_ALT, BMP280_CHIPID);
+  // initialize control over the keyboard:
+  Keyboard.begin();
 
   /* Default settings from datasheet. */
   bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
@@ -40,19 +48,40 @@ void setup() {
 }
 
 void loop() {
-  if(oldValue < newValue){
+  int calcValue = Value1 + Value2 + Value3;
+  int oldValue = calcValue / 3;
+  if(oldValue < TheValue){
     //rising
+    Keyboard.write(KEY_LEFT_ALT);
     Serial.print("Rising");
+    Serial.print("--");
+    Serial.print(oldValue);
+    Serial.print("-");
+    Serial.print(TheValue);
+    
   }
   else
   {
     Serial.print("Faling");
+    Serial.print("--");
+    Serial.print(oldValue);
+    Serial.print("-");
+    Serial.print(TheValue);
+    Serial.print("-");
+    Serial.print(Value1);
+    Serial.print("-");
+    Serial.print(Value2);
+    Serial.print("-");
+    Serial.print(Value3);
   }
-  oldValue = newValue;
+  Value1 = TheValue;
+  
   
   sensors_event_t pressure_event;
   bmp_pressure->getEvent(&pressure_event);
-  newValue = pressure_event.pressure;
+  TheValue = pressure_event.pressure;
+  Value2 = Value1;
+  Value3 = Value2;
   Serial.println("");
-  delay(100);
+  delay(500);
 }
