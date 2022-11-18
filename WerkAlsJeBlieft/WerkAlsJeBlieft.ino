@@ -60,7 +60,7 @@ void loop() {
     Serial.print(TheValue);
     
   }
-  else
+  else if(oldValue >= TheValue)
   {
     Keyboard.releaseAll();
     Serial.print("Faling");
@@ -75,14 +75,17 @@ void loop() {
     Serial.print("-");
     Serial.print(Value3);
   }
-  Value1 = TheValue;
   
   
   sensors_event_t pressure_event;
   bmp_pressure->getEvent(&pressure_event);
   TheValue = pressure_event.pressure;
-  Value2 = Value1;
   Value3 = Value2;
+  
+  Value2 = Value1;
+  
+  Value1 = TheValue;
+  
   Serial.println("");
   delay(500);
 }
